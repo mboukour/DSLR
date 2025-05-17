@@ -1,8 +1,5 @@
 
 
-
-
-
 def unique_combinations(data: list) -> list:
     combinations = []
     remaining = data[1:]

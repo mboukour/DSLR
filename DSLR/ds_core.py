@@ -22,8 +22,6 @@ def describe(df: pd.DataFrame) -> pd.DataFrame:
     describe_df.map(lambda x: f"{x:.2f}")
     return describe_df
 
-
-
 class Histogram:
     def __init__(self, df: pd.DataFrame):
         df = df.drop(columns=["First Name", "Last Name", "Birthday", "Best Hand"])
@@ -47,11 +45,11 @@ class Histogram:
     def savefig(self, save_as: str="histogram.png") -> None:
         plt.savefig(save_as)
 
-
-class Scatter:
+class ScatterPlot:
     def __init__(self, df: pd.DataFrame):
         df = df.drop(columns=["Hogwarts House", "First Name", "Last Name", "Birthday", "Best Hand"])
-        pairs = unique_combinations(list(df.columns))
+        features = list(df.columns)
+        pairs = unique_combinations(features)
         fig = plt.figure(figsize=(70,70))
         gs = gridspec.GridSpec(nrows=13, ncols=6, figure=fig)
         slot = [0,0]
@@ -66,4 +64,37 @@ class Scatter:
         plt.show()
 
     def savefig(self, save_as: str="scatter.png") -> None:
+        plt.savefig(save_as)
+
+class PairPlot:
+    def __init__(self, df: pd.DataFrame):
+        color_map = {'Gryffindor': 'red', 'Slytherin': 'green', 'Ravenclaw': 'blue', 'Hufflepuff': 'yellow'}
+        colors = df["Hogwarts House"].map(color_map)
+        df = df.drop(columns=["Hogwarts House", "First Name", "Last Name", "Birthday", "Best Hand"])
+        features = list(df.columns)
+        fig = plt.figure(figsize=(100,100))
+        gs = gridspec.GridSpec(nrows=13, ncols=13, figure=fig)
+        slot = [0,0]
+        n = len(features)
+
+        for i in range(n):
+            for j in range(n):
+                ax = fig.add_subplot(gs[slot[0], slot[1]])
+                ax.set_xticks([])
+                ax.set_yticks([])
+                if i == j:
+                    ax.hist(x=df[features[i]], color="grey")
+                else:
+                    ax.scatter(x=df[features[i]], y=df[features[j]], c=colors)
+                if i == n - 1:
+                    ax.set_xlabel(features[j], fontsize=40)
+                if j == 0:
+                    ax.set_ylabel(features[i], fontsize=40)
+                next_slot(slot, 13, 13)
+        plt.tight_layout()
+
+    def show(delf) -> None:
+        plt.show()
+
+    def savefig(self, save_as:str = "pair_plot.png") -> None:
         plt.savefig(save_as)
