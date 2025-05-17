@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from DSLR.dslr_math import *
+from DSLR.dslr_utils import unique_combinations, next_slot
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
@@ -22,36 +23,47 @@ def describe(df: pd.DataFrame) -> pd.DataFrame:
     return describe_df
 
 
+
 class Histogram:
     def __init__(self, df: pd.DataFrame):
         df = df.drop(columns=["First Name", "Last Name", "Birthday", "Best Hand"])
         courses = df.columns[1:]
         houses = df.groupby("Hogwarts House")[courses] #group and remove House Name
-        self.__slot = [0,0]
-        self.__cols = 3
-        self.__rows = 5
+        slot = [0,0]
         fig = plt.figure(figsize=(8, 10))
         gs = gridspec.GridSpec(nrows=5, ncols=3, figure=fig)
         for course in courses:
             ax = fig.add_subplot(gs[self.__slot[0], self.__slot[1]])
             ax.set_title(course)
-            for name, house in houses:
+            for _, house in houses:
                 ax.hist(x=house[course], alpha=0.5)
-            self.__next_slot()
+            next_slot(slot, 5, 3)
         plt.tight_layout()
-        
-            
-    def __next_slot(self) -> None:
-        if self.__slot[1] < self.__cols - 1:
-            self.__slot[1] += 1
-        elif self.__slot[0] < self.__rows - 1:
-            self.__slot[0] += 1
-            self.__slot[1] = 0
-
 
 
     def show(self) -> None:
         plt.show()
 
     def savefig(self, save_as: str="histogram.png") -> None:
+        plt.savefig(save_as)
+
+
+class Scatter:
+    def __init__(self, df: pd.DataFrame):
+        df = df.drop(columns=["Hogwarts House", "First Name", "Last Name", "Birthday", "Best Hand"])
+        pairs = unique_combinations(list(df.columns))
+        fig = plt.figure(figsize=(70,70))
+        gs = gridspec.GridSpec(nrows=13, ncols=6, figure=fig)
+        slot = [0,0]
+        for course_1, course_2 in pairs:
+            ax = fig.add_subplot(gs[slot[0], slot[1]])
+            ax.set_title(f"{course_1} vs {course_2}")
+            ax.scatter(x=df[course_1], y=df[course_2], color="blue")
+            next_slot(slot, 13, 6)
+        plt.tight_layout()
+
+    def show(self) -> None:
+        plt.show()
+
+    def savefig(self, save_as: str="scatter.png") -> None:
         plt.savefig(save_as)
