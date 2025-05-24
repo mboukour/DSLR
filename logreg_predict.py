@@ -3,7 +3,6 @@ from DSLR.dslr_utils import load_model_params, StandardScaler
 from DSLR.dslr_math import calculate_mean
 import pandas as pd
 
-
 if __name__ == "__main__":
     df = pd.read_csv("datasets/dataset_train.csv", index_col="Index")
     df.drop(columns=["Hogwarts House", "Birthday", "Best Hand", "First Name", "Last Name"], inplace=True)
