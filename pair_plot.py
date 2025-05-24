@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from DSLR.ds_core import PairPlot
 
 if __name__ == "__main__":

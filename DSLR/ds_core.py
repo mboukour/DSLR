@@ -5,6 +5,7 @@ from DSLR.dslr_utils import unique_combinations, next_slot
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+
 def describe(df: pd.DataFrame) -> pd.DataFrame:
     numerical_cols = df.select_dtypes(include=["number"]).columns
     indexes = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
@@ -93,7 +94,7 @@ class PairPlot:
                 next_slot(slot, 13, 13)
         plt.tight_layout()
 
-    def show(delf) -> None:
+    def show(self) -> None:
         plt.show()
 
     def savefig(self, save_as:str = "pair_plot.png") -> None:
