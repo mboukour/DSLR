@@ -7,6 +7,15 @@ import matplotlib.gridspec as gridspec
 
 
 def describe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Compute descriptive statistics (count, mean, std, min, quantiles, max) for numerical columns.
+
+    Args:
+        df (pd.DataFrame): Input dataframe.
+
+    Returns:
+        pd.DataFrame: DataFrame with descriptive statistics for numerical columns.
+    """
     numerical_cols = df.select_dtypes(include=["number"]).columns
     indexes = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
     data = [
@@ -24,6 +33,12 @@ def describe(df: pd.DataFrame) -> pd.DataFrame:
     return describe_df
 
 class Histogram:
+    """
+    Create histograms for each course grouped by Hogwarts House.
+
+    Args:
+        df (pd.DataFrame): The full original dataframe.
+    """
     def __init__(self, df: pd.DataFrame):
         df = df.drop(columns=["First Name", "Last Name", "Birthday", "Best Hand"])
         courses = df.columns[1:]
@@ -47,6 +62,12 @@ class Histogram:
         plt.savefig(save_as)
 
 class ScatterPlot:
+    """
+    Create scatter plots for all unique pairs of features.
+
+    Args:
+        df (pd.DataFrame): The full original dataframe.
+    """
     def __init__(self, df: pd.DataFrame):
         df = df.drop(columns=["Hogwarts House", "First Name", "Last Name", "Birthday", "Best Hand"])
         features = list(df.columns)
@@ -68,6 +89,12 @@ class ScatterPlot:
         plt.savefig(save_as)
 
 class PairPlot:
+    """
+    Create a pairplot showing histograms on diagonals and scatter plots elsewhere, colored by house.
+
+    Args:
+        df (pd.DataFrame): The full original dataframe.
+    """
     def __init__(self, df: pd.DataFrame):
         color_map = {'Gryffindor': 'red', 'Slytherin': 'green', 'Ravenclaw': 'blue', 'Hufflepuff': 'yellow'}
         colors = df["Hogwarts House"].map(color_map)
