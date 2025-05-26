@@ -308,7 +308,6 @@ class MultiLogisticRegression:
         X = np.column_stack((X.to_numpy(), np.ones(X.shape[0])))
         probas = [model.predict(X) for model in self.__models.values()]
         probas = np.stack(probas, axis=1)
-        print(probas)
         preds = np.array([])
         for proba in probas:
             preds = np.append(preds, np.argmax(proba))

@@ -5,7 +5,7 @@ import pandas as pd
 
 if __name__ == "__main__":
     df = pd.read_csv("datasets/dataset_train.csv", index_col="Index")
-    df.drop(columns=["Hogwarts House", "Birthday", "Best Hand", "First Name", "Last Name"], inplace=True)
+    df.drop(columns=["Hogwarts House", "Birthday", "Best Hand", "First Name", "Last Name", "Care of Magical Creatures", "Potions", "Arithmancy"], inplace=True)
     for col in df.columns:
         mean = calculate_mean(df[col])
         df[col] = df[col].fillna(mean)
