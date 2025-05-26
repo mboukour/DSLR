@@ -7,7 +7,7 @@ import json
 
 if __name__  == "__main__":
     df = pd.read_csv("datasets/dataset_train.csv", index_col="Index")
-    df.drop(columns=["Birthday", "Best Hand", "First Name", "Last Name"], inplace=True)
+    df.drop(columns=["Birthday", "Best Hand", "First Name", "Last Name", "Care of Magical Creatures", "Potions", "Arithmancy"], inplace=True)
     y = df["Hogwarts House"]
     df.drop(columns=["Hogwarts House"], inplace=True)
     df.reset_index(drop=True, inplace=True)
@@ -17,7 +17,7 @@ if __name__  == "__main__":
     X_train, X_test, y_train, y_test = test_train_split(df, y)
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
-    model = MultiLogisticRegression(X_train, y_train, mode="mini-batch")
+    model = MultiLogisticRegression(X_train, y_train, mode="stochastic")
     model.fit()
     model.scatter_log_loss()
     X_test = scaler.transform(X_test)
